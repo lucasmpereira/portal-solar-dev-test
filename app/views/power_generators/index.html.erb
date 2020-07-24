@@ -1,0 +1,90 @@
+<div>
+  <div class="header">
+    <div class="logo"><%= image_tag 'ps_logo.png' %></div>
+    <div class="header__title">Geradores de Energia</div>
+  </div>
+
+  <div class="searcher gradient">
+    <div class="searcher__radio">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="searchRadio" id="simpleSearch" value="simple" checked>
+        <label class="form-check-label" for="simpleSearch">Pesquisa simples</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="searchRadio" id="advancedSearch" value="advanced">
+        <label class="form-check-label" for="advancedSearch">Pesquisa Avançada</label>
+      </div>
+    </div>
+
+    <%= form_tag("/", method:"get", remote: true ) do %>
+      <div class="simple-form">
+        <div class="simple-form__input">
+          <input class="form-control form-control-lg" type="text" placeholder="o que procura?">
+        </div>
+        <div class="simple-form__btn">
+          <button type="submit" class="btn btn-outline-primary btn-lg">Pesquisar</button>
+        </div>
+      </div>
+
+      <div class="advanced-form" style="display:none;">
+        Entradas do usuário para pesquisar uma coleção de geradores de energia com base nas recomendações fornecidas e melhor custo de frete.
+      </div>
+    <% end %>
+
+    <%= form_tag("/", method:"get", remote: true, id: "power_generators_order") do %>
+      <div class="searcher__radio" style="right: 30px;width: 300px;position: absolute;">
+        <label>Ordenar por</label>
+        <div class="form-check">
+          <input search-js="true" class="form-check-input" type="radio" name="sortRadio" id="sortPrice" value="sortPrice" checked>
+          <label  class="form-check-label" for="sortPrice">Preço</label>
+        </div>
+        <div class="form-check">
+          <input search-js="true" class="form-check-input" type="radio" name="sortRadio" id="sortKWP" value="sortKWP">
+          <label class="form-check-label" for="sortKWP">KWP</label>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <div id="power_generators"><%= render 'power_generators' %></div>
+</div>
+
+<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">
+          Calcular o frete 
+        </h2>
+        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+      <%= form_for :freight_cost, url: '/freights', method: :get, remote: true do |form|%>
+        <%= form.label :zip_code, 'CEP:' %>
+        <%= form.text_field :zip_code  %>
+        <%= form.hidden_field :power_generator_id, value: "", id: 'hidden-pgen-id' %>
+      </main>
+      <footer class="modal__footer">    
+        <%= form.submit 'Calcular o frete' %>
+      <% end  %>
+      </footer>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+$(function () {
+  //
+  $("[search-js]").change(function(){
+    $.get($('#power_generators_order').attr('action'),
+    $('#power_generators_order').serialize(), null, 'script');
+    return false;
+  });
+})
+
+$(".freight-btn").click(function() {
+  $("#hidden-pgen-id").val($(this).attr("dt_pwr_generator_id"))
+});
+
+</script>

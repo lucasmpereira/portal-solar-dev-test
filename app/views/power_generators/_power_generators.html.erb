@@ -1,0 +1,22 @@
+<div class="flickr_pagination ">
+<%= will_paginate @power_generators %>
+</div>
+
+<div class="power_generators container" >
+<% @power_generators.each do |power_generator| %>
+  <div class="box card power_generator-card" >
+    <%= image_tag power_generator.image_url, class: 'power_generator-card__img' %>
+    <div class="power_generator-card__body">
+      <h2><%= power_generator.name.upcase %></h2>
+      <p class="power_generator-card__price"><%= number_to_currency(power_generator.price, unit: "R$ ", precision: 2, :separator => ",", :delimiter => ".") %></p>
+      <p><strong>Descrição: </strong><%= power_generator.description %></p>
+
+      <button href="#" class="freight-btn" data-micromodal-trigger="modal-1" class="" dt_pwr_generator_id="<%= power_generator.id %>">Calcular o frete!</button>
+    </div>
+  </div>
+<% end %>
+</div>
+
+<div class="flickr_pagination" style="margin-top: 50px;">
+<%= will_paginate @power_generators %>
+</div>
