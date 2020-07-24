@@ -30,6 +30,7 @@ Este projeto utiliza:
 
 - Ruby versão `2.6.3`
 - Rails versão `5.2`
+- Elasticsearch '7'
 
 O banco de dados já está com o schema "pré pronto" e algumas informações necessárias o projeto.
 Execute os comandos abaixo:
